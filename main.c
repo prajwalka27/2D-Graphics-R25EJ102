@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #define ROWS 15
 #define COLS 30
@@ -47,6 +48,38 @@ void drawRectangle(int x,int y,int width,int height)
     }
 }
 
+void drawLine(int x1,int y1,int x2,int y2)
+{
+    int dx=x2-x1;
+    int dy=y2-y1;
+
+    int steps=(abs(dx)>abs(dy)) ? abs(dx) : abs(dy);
+
+    float xInc=dx/(float)steps;
+    float yInc=dy/(float)steps;
+
+    float x=x1;
+    float y=y1;
+
+    for(int i=0;i<=steps;i++)
+    {
+        drawPoint((int)(x+0.5),(int)(y+0.5));
+        x+=xInc;
+        y+=yInc;
+    }
+}
+
+void drawTriangle(int x,int y,int size)
+{
+    for(int i=0;i<size;i++)
+    {
+        for(int j=0;j<=i;j++)
+        {
+            drawPoint(x+i,y+j);
+        }
+    }
+}
+
 int main()
 {
     int choice;
@@ -55,10 +88,14 @@ int main()
 
     while(1)
     {
-        printf("\n1.Draw Rectangle");
-        printf("\n2.Display Canvas");
-        printf("\n3.Exit");
-        printf("\nEnter Choice: ");
+        printf("\n===== 2D GRAPHICS EDITOR =====\n");
+        printf("1. Draw Rectangle\n");
+        printf("2. Draw Line\n");
+        printf("3. Draw Triangle\n");
+        printf("4. Display Canvas\n");
+        printf("5. Exit\n");
+
+        printf("Enter Choice: ");
         scanf("%d",&choice);
 
         switch(choice)
@@ -66,19 +103,35 @@ int main()
             case 1:
             {
                 int x,y,w,h;
-                printf("Enter x y width height: ");
                 scanf("%d%d%d%d",&x,&y,&w,&h);
-
                 drawRectangle(x,y,w,h);
                 displayCanvas();
                 break;
             }
 
             case 2:
+            {
+                int x1,y1,x2,y2;
+                scanf("%d%d%d%d",&x1,&y1,&x2,&y2);
+                drawLine(x1,y1,x2,y2);
+                displayCanvas();
+                break;
+            }
+
+            case 3:
+            {
+                int x,y,size;
+                scanf("%d%d%d",&x,&y,&size);
+                drawTriangle(x,y,size);
+                displayCanvas();
+                break;
+            }
+
+            case 4:
                 displayCanvas();
                 break;
 
-            case 3:
+            case 5:
                 return 0;
         }
     }
